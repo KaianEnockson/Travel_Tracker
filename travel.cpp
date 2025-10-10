@@ -1,4 +1,5 @@
 #include <iostream>
+#include <algorithm>
 #include <string>
 #include <vector>
 #include <map>
@@ -6,11 +7,8 @@
 
 using namespace std;
 
-struct TravelTracker
-{
-        string continent = "";
-        string city = "";
-};
+map<string, string> itinerary;
+vector<pair<const string, string>> iVector(itinerary.begin(), itinerary.end());
 
 void print_commands()
 {
@@ -19,13 +17,12 @@ void print_commands()
 		"insert - add a new city\n" <<
 		"view - view entry history\n" <<
 		"total - view the total amount of entries\n" <<
+		"sort - sort the entries by continent\n" <<
 		"exit - exit the program\n\n";
 }
 
 void handle_input(string input)
 {
-	map<string, string> itinerary;
-
 	if (input == "insert")
 	{
 		string city;
@@ -43,8 +40,7 @@ void handle_input(string input)
 
 			if (continent == "asia" || continent == "australia" || continent == "north america" || continent == "south america" || continent == "europe" || continent == "africa" || continent == "antarctica")
 			{
-				itinerary[city] = city;
-				itinerary[continent] = continent;
+				itinerary[city] = continent;
 
 				cout << "Your entry has been saved!\n\n";
 				isValidContinent = true;
@@ -58,14 +54,48 @@ void handle_input(string input)
 	}
 	if (input == "view")
 	{
-		displayItinerary(itinerary);
+		if (itinerary.empty())
+		{
+			cout << "There are no inserts. Please add a travel insertion.\n\n";
+		}
+		else
+		{
+			displayItinerary(itinerary);
+		}
 	}
-	else if (input == "total")
+	if (input == "total")
 	{
-		
+		cout << "There are " << itinerary.size() << " Entries in your itinerary.\n\n";
 	}
-	else if (input == "exit")
+	if (input == "sort")
 	{
-		
+		sortContinent(itinerary);
+	}
+	if (input == "exit")
+	{
+		cout << "Goodbye!\n\n" << endl;
+	}
+}
+
+bool cmp(pair<string, string>& a,
+	pair<string, string>& b)
+{
+	return a.second > b.second;
+}
+
+void sortContinent(map<string, string>& M)
+{
+	vector<pair<string, string> > A;
+
+	for (auto& it : M)
+	{
+		A.push_back(it);
+	}
+
+	sort(A.begin(), A.end(), cmp);
+
+	for (auto& it : A)
+	{
+		cout << "City: " << it.first << " - Continent: " << it.second << endl;
 	}
 }

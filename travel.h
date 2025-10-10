@@ -6,24 +6,22 @@
 #include <string>
 #include <iostream>
 #include <map>
+#include <algorithm>
 
 using namespace std;
 
-struct TravelItinerary
-{
-	string country = "";
-	string city = "";
-};
-
 void print_commands();
 void handle_input(string input);
+void sortContinent(map<string, string>& M);
+bool cmp(pair<string, string>& a, pair<string, string>& b);
+
 
 template <typename k, typename v>
 void displayItinerary(const map<k, v>& itemMap)
 {
 	for (const auto& pair : itemMap)
 	{
-		cout << pair.first << "(" << pair.second << ")\n";
+		cout << "City: " << pair.first << " - Continent: " << pair.second << "\n";
 	}
 	cout << endl;
 }
